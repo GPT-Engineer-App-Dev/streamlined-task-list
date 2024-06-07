@@ -9,6 +9,7 @@ import {
   Checkbox,
   IconButton,
   useToast,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 
@@ -16,6 +17,8 @@ const Index = () => {
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState("");
   const toast = useToast();
+  const bg = useColorModeValue("gray.100", "gray.700");
+  const color = useColorModeValue("black", "white");
 
   const addTask = () => {
     if (!task) {
@@ -44,7 +47,7 @@ const Index = () => {
   };
 
   return (
-    <Container centerContent maxW="container.md" py={10}>
+    <Container centerContent maxW="container.md" py={10} bg={bg} color={color}>
       <VStack spacing={4} w="100%">
         <HStack w="100%">
           <Input

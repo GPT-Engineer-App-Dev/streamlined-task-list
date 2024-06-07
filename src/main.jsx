@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme, CSSReset } from "@chakra-ui/react";
+import { ColorModeScript } from "@chakra-ui/react";
+
+const config = {
+  initialColorMode: "light",
+  useSystemColorMode: false,
+};
 
 const colors = {
   brand: {
@@ -11,12 +17,26 @@ const colors = {
   },
 };
 
-const theme = extendTheme({ colors });
+const theme = extendTheme({ config, colors });
+
+const Main = () => {
+  const [colorMode, setColorMode] = useState(localStorage.getItem("chakra-ui-color-mode") || "light");
+
+  useEffect(() => {
+    localStorage.setItem("chakra-ui-color-mode", colorMode);
+  }, [colorMode]);
+
+  return (
+    <ChakraProvider theme={theme}>
+      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+      <CSSReset />
+      <App colorMode={colorMode} setColorMode={setColorMode} />
+    </ChakraProvider>
+  );
+};
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ChakraProvider theme={theme}>
-      <App />
-    </ChakraProvider>
+    <Main />
   </React.StrictMode>
 );
